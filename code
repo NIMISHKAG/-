@@ -1,0 +1,28 @@
+module pos_edge_det (
+    input sig,           
+    input clk,            
+    input res,            
+    output pe,
+    output reg out
+);          
+
+    reg sig_dly;                         
+
+    always @ (posedge clk or posedge res) begin
+        if (res) begin
+            sig_dly <= 0;
+        end else begin
+            sig_dly <= sig;
+        end
+    end
+
+    assign pe = sig & ~sig_dly;            
+
+    always @ (posedge clk or posedge res) begin
+        if (res) begin
+            out <= 0;
+        end else if (pe) begin
+            out <= ~out;
+        end
+    end
+endmodule 
